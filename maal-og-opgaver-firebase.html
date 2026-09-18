@@ -1,0 +1,1958 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Mål & opgaver" />
+    <meta name="theme-color" content="#2864dc" />
+    <title>Mål & opgaver</title>
+    <style>
+:root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f5f7fb; --value-col-width: 96px; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #f5f7fb; transition: background-color .25s ease, background-image .25s ease; }
+body.background-sand { background-color: #f2ede4; } body.background-sage { background-color: #eaf0eb; }
+body.has-background-image { background-color: #dce2e8; background-image: linear-gradient(#f5f7fbd6, #f5f7fbd6), var(--user-background-image); background-position: center; background-size: cover; background-attachment: fixed; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+.app-shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 64px 0 72px; }
+.page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.header-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
+.header-actions .button { min-height: 34px; padding: 0 11px; font-size: .8rem; box-shadow: none; }
+.secondary-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+.more-toggle { display: none; }
+.fab-icon { font-weight: 900; }
+.fab-label { display: inline; }
+.profile-switcher { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e0e6f0; }.profile-list { display: flex; flex-wrap: wrap; gap: 12px; }.profile-card { display: inline-grid; grid-template-columns: auto auto; align-items: center; gap: 8px; padding: 5px 10px 5px 5px; border: 1px solid transparent; border-radius: 999px; color: #4a5870; background: transparent; font-weight: 700; }.profile-card:hover, .profile-card.is-active { border-color: #cfdcf4; background: #f1f5ff; }
+.profile-card.drop-target { border-color: #2864dc; background: #dbe7ff; box-shadow: 0 0 0 3px #2864dc33; transform: scale(1.04); transition: transform .1s, box-shadow .1s; }.profile-avatar { display: grid; place-items: center; width: 36px; height: 36px; overflow: hidden; border-radius: 50%; color: white; background-color: var(--profile-color); background-position: center; background-size: cover; font-size: 1.1rem; box-shadow: inset 0 0 0 1px #ffffff66; }
+.profile-count { padding: 1px 8px; border-radius: 999px; background: #e6ebf5; color: #5a6b8c; font-size: .78rem; font-weight: 800; }
+.profile-card.is-active .profile-count { display: none; }
+.eyebrow { margin: 0 0 6px; color: #62708a; font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 7px; font-size: clamp(2rem, 5vw, 2.75rem); letter-spacing: -.045em; }
+.subtitle { margin-bottom: 0; color: #63708a; }
+.button { min-height: 42px; border: 1px solid transparent; border-radius: 10px; padding: 0 16px; font-weight: 700; transition: transform .15s, background .15s; }
+.button:active { transform: translateY(1px); }
+.button-primary { color: white; background: #2864dc; box-shadow: 0 5px 14px #2864dc33; }
+.button-primary:hover { background: #1f55c4; }
+.button-secondary { color: #374258; background: #f2f4f8; border-color: #dbe1eb; }
+.content-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; align-items: start; gap: 22px; }
+.side-panel { position: sticky; top: 18px; display: grid; gap: 12px; padding: 14px; border: 1px solid #e2e7f0; border-radius: 13px; background: #fff; box-shadow: 0 4px 12px #33415c0a; }
+.quick-add, .filters { display: grid; gap: 10px; margin: 0; }
+.quick-add label { display: grid; gap: 5px; color: #66738a; font-size: .73rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.quick-add input, .filters input, .filters select { min-height: 42px; border: 1px solid #cfd7e4; border-radius: 10px; padding: 0 12px; outline: none; color: #202a3d; background: #fff; }
+.quick-add input { flex: 1; }
+.quick-add input:focus, .filters input:focus, .filters select:focus { border-color: #2864dc; box-shadow: 0 0 0 3px #2864dc1c; }
+.filters { padding-top: 12px; border-top: 1px solid #e7ebf2; }
+.background-picker { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid #e7ebf2; }.background-picker label { display: grid; gap: 5px; color: #66738a; font-size: .73rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }.background-picker select { min-height: 38px; border: 1px solid #cfd7e4; border-radius: 9px; padding: 0 9px; color: #202a3d; background: #fff; }
+.filters label { display: grid; flex: 1; gap: 5px; color: #66738a; font-size: .73rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.filters .search-field { flex: 2; }
+.task-panel { min-height: 185px; }
+.task-list { display: grid; gap: 10px; }
+.task { position: relative; display: grid; grid-template-columns: auto minmax(120px, 1fr) var(--value-col-width) var(--value-col-width) auto; align-items: center; gap: 10px; min-height: 78px; padding: 14px 14px 14px 18px; border: 1px solid #e2e7f0; border-radius: 13px; background: #fff; box-shadow: 0 4px 12px #33415c0a; cursor: grab; overflow: visible; transition: opacity .15s, box-shadow .15s, transform .15s; }
+.task:active { cursor: grabbing; }
+.task.dragging { z-index: 4; opacity: .9; outline: 4px solid #2864dc; outline-offset: 5px; background: #f4f7ff; box-shadow: 0 16px 34px #18366b42; transform: scale(1.025); }
+.task.completing { pointer-events: none; animation: task-fade-away .43s ease-in forwards; }
+.task.super-completing { pointer-events: none; transform-origin: center; animation: super-done-burst 1.05s cubic-bezier(.2,.75,.2,1) forwards; }
+@keyframes task-fade-away { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.975) translateX(24px); filter: blur(2px); } }
+@keyframes super-done-burst { 0% { opacity: 1; transform: scale(1); } 18% { opacity: 1; transform: scale(1.018); background: #fff8d9; } 55% { opacity: .92; transform: scale(.97); } 100% { opacity: 0; transform: scale(.88); filter: blur(2px); } }
+.task.completed { color: #778298; background: #fafbfc; }
+.task.completed .task-title { color: #778298; text-decoration: line-through; }
+.task.completed .task-notes, .task.completed .due-date, .task.completed .task-value { color: #778298; text-decoration: line-through; }
+.check { appearance: none; width: 23px; height: 23px; margin: 0; border: 2px solid #8a96a8; border-radius: 50%; display: grid; place-content: center; cursor: pointer; }
+.check::before { content: "✓"; color: white; font-weight: 900; font-size: .87rem; transform: scale(0); transition: transform .12s; }
+.check:checked { border-color: #2864dc; background: #2864dc; }
+.check:checked::before { transform: scale(1); }
+.super-check { display: grid; place-items: center; width: 23px; height: 23px; padding: 0; border: 2px solid #2864dc; border-radius: 50%; color: white; background: #fff; font-size: .82rem; font-weight: 900; cursor: pointer; }
+.super-check:hover { background: #eaf0ff; box-shadow: 0 0 0 4px #2864dc26; }.super-check.is-done { background: #2864dc; }
+.rank-check { display: flex; align-items: center; gap: 7px; }
+.task-rank { min-width: 20px; color: #9aa4b6; font-size: .78rem; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+.completed .task-rank { color: #b7bfcd; }
+.celebration-overlay { position: absolute; z-index: 5; inset: 0; pointer-events: none; overflow: visible; }.celebration-overlay i { position: absolute; left: var(--x); top: var(--y); display: block; background: var(--color); animation: celebrate-piece .95s cubic-bezier(.15,.7,.25,1) forwards; }.confetti { width: 16px; height: 24px; border-radius: 2px; }.serpentine { width: 9px; height: 52px; border-radius: 12px; }.flag { width: 0; height: 0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-left: 30px solid var(--color); background: transparent !important; }
+@keyframes celebrate-piece { 0% { opacity: 0; transform: translate(0, 0) rotate(0); } 14% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--spin)); } }
+.superdone-overlay { position: fixed; z-index: 50; inset: 0; overflow: hidden; pointer-events: none; visibility: hidden; }.superdone-overlay.is-active { visibility: visible; }.pixel-boom { position: absolute; left: var(--x); top: var(--y); z-index: 2; width: clamp(90px, 15vw, 210px); aspect-ratio: 1; background: #ff8a34; clip-path: polygon(50% 0, 60% 25%, 86% 10%, 77% 37%, 100% 50%, 75% 60%, 86% 88%, 60% 75%, 50% 100%, 39% 74%, 11% 87%, 22% 61%, 0 50%, 23% 38%, 12% 10%, 40% 25%); filter: drop-shadow(8px 8px 0 #ef3e35); transform: translate(-50%, -50%); animation: pixel-boom 1.5s steps(7, end) forwards; }.pixel-boom::before { content: ''; position: absolute; inset: 24%; background: #ffdb4d; clip-path: inherit; }.pixel-boom::after { content: ''; position: absolute; inset: 42%; background: #fff5b5; clip-path: inherit; }.screen-pixel { position: absolute; left: var(--x); top: var(--y); width: 18px; height: 18px; background: var(--color); box-shadow: 4px 4px 0 #1b2140; animation: screen-pixel 1.7s steps(8, end) forwards; }@keyframes pixel-boom { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.15); } 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.18); } 55% { opacity: 1; transform: translate(-50%, -50%) scale(.94); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); } }@keyframes screen-pixel { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.2) rotate(0); } 13% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin)); } }
+.task-content { min-width: 0; }
+.task-title { margin: 0 0 5px; overflow-wrap: anywhere; color: #202a3d; font-size: 1rem; font-weight: 700; }
+.task-notes { display: -webkit-box; margin: 0 0 5px; overflow: hidden; color: #6e7a8f; font-size: .79rem; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.due-date { display: block; color: #788399; font-size: .78rem; }
+.overdue { border-color: #e9b6c0; }.overdue-label { color: #b52d47; font-weight: 700; }
+.task-value { display: grid; justify-self: stretch; justify-items: end; gap: 4px; width: var(--value-col-width); min-width: 0; color: #4e5b73; font-size: .88rem; text-align: right; overflow-wrap: anywhere; }
+.meta-label { color: #8a95a8; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.menu { position: relative; }
+.icon-button { display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 8px; color: #657188; background: transparent; font-size: 1.35rem; line-height: 1; }
+.icon-button:hover { color: #202a3d; background: #f0f3f8; }
+.menu-popover { position: absolute; z-index: 2; top: 38px; right: 0; display: none; width: 130px; padding: 5px; border: 1px solid #dfe5ee; border-radius: 9px; background: white; box-shadow: 0 10px 25px #2435591c; }
+.menu.open .menu-popover { display: grid; }
+.menu-popover button { padding: 8px 9px; border: 0; border-radius: 6px; color: #29344a; text-align: left; background: transparent; }
+.menu-popover button:hover { background: #f2f5fa; }
+.menu-popover .danger { color: #bd3148; }
+.drag-handle { display: grid; place-items: center; width: 30px; height: 38px; color: #9aa4b4; cursor: grab; touch-action: none; user-select: none; font-size: 1.2rem; letter-spacing: -3px; }
+.drag-handle:active { cursor: grabbing; }
+.completed-section { margin-top: 300px; padding-top: 22px; border-top: 1px solid #e0e6f0; }
+.completed-section #completed-list.is-collapsed, .completed-section #completed-list[hidden] { display: none !important; }
+.completed-section h2 { margin-bottom: 13px; color: #657188; font-size: .93rem; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }.section-heading h2 { margin-bottom: 13px; }
+.completed-toggle { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid #dce3ee; border-radius: 9px; color: #4d5b72; background: #f8fafc; font-size: .9rem; font-weight: 800; }.completed-toggle::before { content: '›'; display: inline-block; color: #7c899d; font-size: 1.2rem; line-height: .8; transition: transform .18s; }.completed-toggle.is-open::before { transform: rotate(90deg); }.completed-toggle span:last-child { color: #8792a3; font-weight: 600; }
+.text-button { border: 0; padding: 4px 0; color: #2864dc; background: transparent; font-size: .85rem; font-weight: 700; }.text-button:hover { text-decoration: underline; }.text-button.danger { color: #bd3148; }
+.empty-state { padding: 52px 20px; border: 1px dashed #cbd5e4; border-radius: 13px; text-align: center; background: #fbfcfe; }
+.empty-state h2 { margin: 10px 0 5px; font-size: 1.1rem; }.empty-state p { color: #657188; }.empty-icon { display: grid; place-items: center; width: 38px; height: 38px; margin: auto; border-radius: 50%; color: #2864dc; background: #eaf0ff; font-weight: 900; }
+.task-dialog { width: min(520px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 20px 65px #18233f3a; }.task-dialog::backdrop { background: #17203380; }
+.task-dialog form { padding: 25px; }.dialog-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }.dialog-heading h2 { margin-bottom: 0; font-size: 1.35rem; }.task-dialog label { display: grid; gap: 7px; margin-bottom: 16px; color: #354057; font-size: .9rem; font-weight: 700; }.task-dialog label span { color: #bc3450; }.task-dialog input, .task-dialog textarea, .task-dialog select { width: 100%; padding: 11px 12px; border: 1px solid #cfd7e4; border-radius: 9px; outline: none; color: #202a3d; font-weight: 400; background: #fff; }.task-dialog textarea { min-height: 78px; resize: vertical; }.task-dialog input:focus, .task-dialog textarea:focus, .task-dialog select:focus { border-color: #2864dc; box-shadow: 0 0 0 3px #2864dc1c; }
+.checkbox-field { display: flex !important; align-items: center; gap: 9px; }
+.checkbox-field input { width: auto !important; }
+.loud-badge { margin-right: 5px; font-size: .95em; }.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; }.toast { position: fixed; bottom: 22px; left: 50%; z-index: 4; padding: 11px 14px; border-radius: 9px; color: white; background: #202a3d; opacity: 0; pointer-events: none; transform: translate(-50%, 14px); transition: opacity .2s, transform .2s; }.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.archive-dialog, .log-dialog { padding: 25px; }.archive-list, .log-list { display: grid; gap: 9px; max-height: min(55vh, 450px); overflow: auto; }.archive-item, .log-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid #e7ebf2; }.archive-item strong, .archive-item span { display: block; }.archive-item span, .log-item time, .muted { color: #738097; font-size: .8rem; }.archive-item > div:last-child { display: flex; gap: 12px; }.log-item { align-items: flex-start; }.log-item span { font-weight: 600; }.log-item time { flex: none; text-align: right; }.toast { display: flex; align-items: center; gap: 12px; }.toast.show { pointer-events: auto; }.toast button { border: 1px solid #ffffff80; border-radius: 6px; padding: 4px 7px; color: white; background: transparent; font-weight: 700; }
+.profile-dialog input[type="color"] { height: 42px; padding: 4px; }.lock-dialog { width: min(390px, calc(100% - 28px)); }.lock-dialog form { padding: 30px; }.lock-dialog h2 { margin-bottom: 22px; font-size: 1.35rem; }.unlock-error { margin: -7px 0 13px; color: #b52d47; font-size: .85rem; font-weight: 700; }
+.dialog-actions-split { justify-content: space-between; padding-top: 10px; margin-top: 6px; border-top: 1px solid #e7ebf2; }
+.move-dialog { width: min(360px, calc(100% - 28px)); padding: 25px; }
+.move-target-list { display: grid; gap: 8px; margin-top: 4px; }
+.move-target-list .profile-card { width: 100%; justify-content: flex-start; }
+.move-target-list .muted { color: #738097; font-size: .85rem; }
+.boom-picker { display: grid; gap: 8px; padding-top: 11px; border-top: 1px solid #e7ebf2; }.boom-picker > span { color: #66738a; font-size: .73rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }.toggle-button { width: 100%; border: 1px solid #dbe1eb; border-radius: 9px; padding: 9px 10px; text-align: left; background: #f7f9fc; }.toggle-button.is-active { border-color: #2864dc; color: #174aaf; background: #eaf0ff; box-shadow: inset 3px 0 0 #2864dc; }
+@media (max-width: 780px) { .app-shell { width: min(100% - 24px, 980px); padding-top: 34px; padding-bottom: 90px; }.page-header { align-items: flex-start; flex-direction: column; }.header-actions { justify-content: flex-start; width: 100%; }.more-toggle { display: inline-flex; }.secondary-actions { display: none; width: 100%; margin-top: 8px; }.secondary-actions.open { display: flex; }.fab { position: fixed; right: 18px; bottom: 18px; z-index: 30; width: 58px; height: 58px; padding: 0; border-radius: 50%; box-shadow: 0 8px 20px #2864dc4d; }.fab-label { display: none; }.fab-icon { font-size: 1.6rem; }.profile-switcher { flex-wrap: wrap; }.profile-list { flex-wrap: nowrap; overflow-x: auto; gap: 22px; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }.profile-card { flex: 0 0 auto; padding: 4px 2px; border: none; border-radius: 0; border-bottom: 3px solid transparent; background: none; }.profile-card:hover, .profile-card.is-active { border-color: #2864dc; background: none; color: #2864dc; }.profile-card.drop-target { background: #eaf0ff; border-radius: 8px; }.profile-avatar { display: none; }.content-layout { grid-template-columns: 1fr; }.side-panel { position: static; grid-template-columns: 1fr 1fr; }.quick-add, .filters { align-content: start; }.task { grid-template-columns: auto auto minmax(0, 1fr); gap: 11px; padding-left: 13px; }.task-content { grid-column: 3; }.task-value:nth-of-type(2) { grid-column: 3; grid-row: 2; }.task-value:nth-of-type(3) { grid-column: 3; grid-row: 3; }.task-value { width: auto; justify-self: end; }.menu { grid-column: 3; grid-row: 4; }.field-grid { grid-template-columns: 1fr; gap: 0; }.task-dialog form, .archive-dialog, .log-dialog { padding: 20px; }.log-item { align-items: stretch; flex-direction: column; gap: 3px; }.log-item time { text-align: left; } }
+@media (prefers-reduced-motion: reduce) { .task.completing, .task.super-completing, .celebration-overlay i { animation-duration: .01ms; } }
+@media (max-width: 480px) { .side-panel { grid-template-columns: 1fr; }.filters { border-top: 1px solid #e7ebf2; }.completed-section { margin-top: 190px; }.header-actions .button { padding: 0 9px; } }
+
+.sync-status { position: fixed; left: 14px; bottom: 14px; z-index: 40; display: flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid #dbe1eb; border-radius: 999px; color: #5a6b8c; background: #fff; font-size: .74rem; font-weight: 700; box-shadow: 0 4px 12px #33415c14; }
+.sync-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #4a8f5b; }
+.sync-status[data-tone="busy"] { color: #2864dc; border-color: #cfdcf4; }
+.sync-status[data-tone="busy"]::before { background: #2864dc; }
+.sync-status[data-tone="warn"] { color: #a3333f; border-color: #f0cccc; background: #fff5f5; }
+.sync-status[data-tone="warn"]::before { background: #c0455a; }
+@media (max-width: 780px) { .sync-status { bottom: 84px; } }
+
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">DIN PRIORITERING</p>
+          <h1>Mål &amp; opgaver</h1>
+          <p class="subtitle">Træk opgaverne i den rækkefølge, du vil løse dem.</p>
+        </div>
+        <div class="header-actions">
+          <button id="toggle-more-actions" class="text-button more-toggle" type="button" aria-expanded="false" aria-controls="secondary-actions">⋯ Mere</button>
+          <div id="secondary-actions" class="secondary-actions">
+            <button id="show-log" class="button button-secondary" type="button">Ændringslog</button>
+            <button id="show-archive" class="button button-secondary" type="button">Arkiv</button>
+            <button id="reset-examples" class="button button-secondary" type="button">Indlæs eksempler</button>
+            <button id="export-excel" class="button button-secondary" type="button">Eksportér Excel</button>
+            <button id="export-tasks" class="button button-secondary" type="button">Backup (JSON)</button>
+            <button id="import-tasks" class="button button-secondary" type="button">Importér</button>
+            <input id="import-file" type="file" hidden />
+          </div>
+          <button id="add-task" class="button button-primary fab" type="button"><span class="fab-icon">+</span><span class="fab-label"> Tilføj opgave</span></button>
+        </div>
+      </header>
+
+      <section class="profile-switcher" aria-label="Profiler">
+        <div id="profile-list" class="profile-list"></div>
+        <button id="edit-profile" class="text-button" type="button">Tilpas lister</button>
+      </section>
+
+      <div class="content-layout">
+        <section class="task-panel" aria-label="Opgaveliste">
+        <div id="empty-state" class="empty-state" hidden>
+          <div class="empty-icon">✓</div>
+          <h2>Din liste er tom</h2>
+          <p>Tilføj din første opgave for at komme i gang.</p>
+          <button id="empty-add-task" class="button button-primary" type="button">Tilføj opgave</button>
+        </div>
+        <div id="active-list" class="task-list" aria-label="Aktive opgaver"></div>
+        <section id="completed-section" class="completed-section" hidden>
+          <div class="section-heading"><button id="completed-toggle" class="completed-toggle" type="button" aria-expanded="false" title="Dobbeltklik for at åbne"><span>Færdige opgaver</span><span id="completed-count"></span></button></div>
+          <div id="completed-list" class="task-list" aria-label="Færdige opgaver" hidden></div>
+        </section>
+        </section>
+        <aside class="side-panel" aria-label="Opgaveværktøjer">
+          <form id="quick-add-form" class="quick-add" aria-label="Tilføj opgave hurtigt">
+            <label><span>Hurtig opgave</span><input id="quick-add-title" type="text" maxlength="160" placeholder="Skriv og tryk Enter" aria-label="Ny opgave" /></label>
+            <button class="button button-primary" type="submit">Tilføj</button>
+          </form>
+          <section class="filters" aria-label="Filtrer opgaver">
+            <label class="search-field"><span>Søg</span><input id="search-tasks" type="search" placeholder="Søg i opgaver" /></label>
+          </section>
+          <section class="background-picker" aria-label="Vælg baggrund">
+            <label><span>Baggrund</span><select id="background-theme"><option value="standard">Lys standard</option><option value="sand">Afdæmpet sand</option><option value="sage">Afdæmpet grøn</option><option value="image">Eget billede</option></select></label>
+            <button id="choose-background-image" class="text-button" type="button">Vælg eget billede</button>
+            <input id="background-file" type="file" accept="image/*" hidden />
+            <button id="reset-background" class="text-button" type="button">Nulstil baggrund</button>
+          </section>
+          <section class="boom-picker" aria-label="Super-done-effekt">
+            <span>Super-done</span>
+            <button id="toggle-boom-done" class="text-button toggle-button" type="button" aria-pressed="false">Skift til BOOM-done</button>
+          </section>
+          <section class="boom-picker" aria-label="Vigtigheds-farver">
+            <span>Vigtigheds-farver</span>
+            <button id="toggle-importance-colors" class="text-button toggle-button" type="button" aria-pressed="true">Farvekodning er aktiv</button>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <dialog id="task-dialog" class="task-dialog">
+      <form id="task-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">OPGAVE</p>
+            <h2 id="dialog-title">Tilføj opgave</h2>
+          </div>
+          <button class="icon-button" id="close-dialog" type="button" aria-label="Luk">×</button>
+        </div>
+        <label>
+          Beskrivelse <span aria-hidden="true">*</span>
+          <input id="task-title" name="title" type="text" required maxlength="160" placeholder="Fx. Færdiggør tilbud" />
+        </label>
+        <label>
+          Noter
+          <textarea id="task-notes" name="notes" maxlength="800" placeholder="Ekstra information om opgaven"></textarea>
+        </label>
+        <div class="field-grid">
+          <label>
+            Tid
+            <input id="task-time" name="time" type="text" maxlength="50" placeholder="Fx. 2 timer" />
+          </label>
+          <label>
+            Beløb
+            <input id="task-money" name="money" type="text" maxlength="50" placeholder="Fx. 500 kr." />
+          </label>
+          <label>
+            Deadline
+            <input id="task-due-date" name="dueDate" type="date" />
+          </label>
+          <label>
+            Vigtighed
+            <select id="task-importance" name="importance">
+              <option value="">Ingen</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+        </div>
+        <label class="checkbox-field">
+          <input id="task-loud" name="loud" type="checkbox" />
+          🔨💥 Markér som støjende/akut opgave
+        </label>
+        <div class="dialog-actions">
+          <button id="cancel-dialog" class="button button-secondary" type="button">Annuller</button>
+          <button class="button button-primary" type="submit">Gem opgave</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="archive-dialog" class="task-dialog archive-dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">ARKIV</p><h2>Arkiverede opgaver</h2></div><button class="icon-button" id="close-archive" type="button" aria-label="Luk">×</button></div>
+      <div id="archive-list" class="archive-list"></div>
+    </dialog>
+    <dialog id="log-dialog" class="task-dialog log-dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">HISTORIK</p><h2>Ændringslog</h2></div><button class="icon-button" id="close-log" type="button" aria-label="Luk">×</button></div>
+      <div id="log-list" class="log-list"></div>
+    </dialog>
+    <dialog id="profile-dialog" class="task-dialog profile-dialog">
+      <form id="profile-form" method="dialog">
+        <div class="dialog-heading"><div><p class="eyebrow">LISTER</p><h2>Tilpas lister</h2></div><button class="icon-button" id="close-profile" type="button" aria-label="Luk">×</button></div>
+        <label>Listenavn<input id="profile-name" name="name" type="text" required maxlength="30" /></label>
+        <label>Listefarve<input id="profile-color" name="color" type="color" /></label>
+        <button id="choose-profile-image" class="text-button" type="button">Vælg eget billede</button>
+        <input id="profile-image-file" type="file" accept="image/*" hidden />
+        <button id="reset-profile-image" class="text-button" type="button">Fjern billede</button>
+        <div class="dialog-actions dialog-actions-split">
+          <button id="delete-profile" class="text-button danger" type="button">Slet denne liste</button>
+          <button id="add-profile" class="text-button" type="button">+ Opret ny liste</button>
+        </div>
+        <div class="dialog-actions"><button id="cancel-profile" class="button button-secondary" type="button">Annuller</button><button class="button button-primary" type="submit">Gem</button></div>
+      </form>
+    </dialog>
+    <dialog id="move-dialog" class="task-dialog move-dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">FLYT OPGAVE</p><h2>Flyt til liste</h2></div><button class="icon-button" id="close-move" type="button" aria-label="Luk">×</button></div>
+      <div id="move-target-list" class="move-target-list"></div>
+    </dialog>
+    <dialog id="lock-dialog" class="task-dialog lock-dialog">
+      <form id="unlock-form" method="dialog">
+        <p class="eyebrow">VELKOMMEN</p>
+        <h2 id="lock-title">Hvad er dit navn, N****?</h2>
+        <label id="unlock-email-field" hidden>E-mail<input id="unlock-email" type="email" autocomplete="username" /></label>
+        <label>Kode<input id="unlock-code" type="password" autocomplete="off" required autofocus /></label>
+        <p id="unlock-error" class="unlock-error" hidden>Prøv igen.</p>
+        <button class="button button-primary" type="submit">Åbn listerne</button>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-message"></span><button id="undo-delete" type="button" hidden>Fortryd</button></div>
+    <div id="superdone-overlay" class="superdone-overlay" aria-hidden="true"></div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script type="module">
+/**
+ * Mål & opgaver — vanilla JS, ingen build-trin.
+ *
+ * Denne fil er opdelt i sektioner:
+ *   0. Firebase-opsætning (udfyld firebaseConfig for at slå sync til)
+ *   1. Storage-nøgler og state
+ *  1b. Datalag: localStorage eller Firestore
+ *   2. DOM-referencer
+ *   3. Storage-helpers (profiler, opgaver, arkiv, log, baggrund)
+ *   4. Generelle hjælpefunktioner
+ *   5. Rendering af opgavelisten
+ *   6. Opgave-handlinger (tilføj, redigér, slet, kopiér, fuldfør)
+ *   7. Træk-og-slip (mus + touch/pen)
+ *   8. Fejrings-animationer ved "Super-done"
+ *   9. Toast-beskeder
+ *  10. Arkiv
+ *  11. Ændringslog
+ *  12. Profiler
+ *  13. Baggrund
+ *  14. Event-bindinger til UI'et
+ *  15. Eksport / import  <-- RØR IKKE VED DATAFORMATET (se note nedenfor)
+ *  16. Låseskærm og opstart
+ *
+ * VIGTIGT om eksport/import (sektion 15):
+ * Feltnavnene i JSON-backuppen (titel, forklaring, eksporteret, opgaver,
+ * rækkefølge, beskrivelse, noter, tid, beløb, deadline, status, ændringslog)
+ * og kolonnenavnene i Excel-arkene (Opgave, Noter, Pris, Tid, Deadline samt
+ * arknavnene "Aktive opgaver" / "Færdige opgaver") er UÆNDREDE i forhold til
+ * den oprindelige version. Det betyder, at tidligere gemte JSON- og
+ * Excel-filer stadig kan importeres uden problemer.
+ */
+
+// ---------------------------------------------------------------------------
+// 0. Firebase
+// ---------------------------------------------------------------------------
+//
+// SÅDAN KOMMER DU I GANG (ca. 10 minutter):
+//
+//  1. Opret et projekt på https://console.firebase.google.com
+//  2. Tilføj en web-app (ikonet </>) og kopiér værdierne ind i
+//     firebaseConfig nedenfor.
+//  3. Build > Authentication > Sign-in method > aktiver "E-mail/adgangskode".
+//     Opret derefter under "Users" den eller de brugere, der skal have
+//     adgang til listerne (fx en fælles husstands-bruger).
+//  4. Build > Firestore Database > opret database (production mode) og
+//     indsæt disse regler under fanen "Rules":
+//
+//        rules_version = '2';
+//        service cloud.firestore {
+//          match /databases/{database}/documents {
+//            match /users/{uid}/data/{document} {
+//              allow read, write: if request.auth != null && request.auth.uid == uid;
+//            }
+//          }
+//        }
+//
+//     Vil I dele de samme lister mellem flere Firebase-brugere, så brug i
+//     stedet en fælles id-streng nedenfor i sharedSpaceId og ændr reglen til
+//     at tillade alle loggede-ind brugere adgang til den sti.
+//  5. Læg filen et sted med https (fx Firebase Hosting: `firebase deploy`).
+//     Firebase Auth virker ikke fra file:// - kun fra https eller localhost.
+//     Husk at tilføje dit domæne under Authentication > Settings >
+//     Authorized domains.
+//
+// Så længe apiKey og projectId er tomme, opfører appen sig præcis som før:
+// alt gemmes kun lokalt i browseren, og koden på låseskærmen er uændret.
+
+const firebaseConfig = {
+  apiKey: '',
+  authDomain: '',          // fx maal-og-opgaver.firebaseapp.com
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: '',
+};
+
+// Tomt = hver Firebase-bruger har sine egne lister. Sætter du en fælles
+// streng (fx 'familien'), deler alle brugere det samme datasæt - husk at
+// tilpasse Firestore-reglerne tilsvarende.
+const sharedSpaceId = '';
+
+// Version af Firebase-SDK'et der hentes fra Googles CDN.
+const firebaseSdkVersion = '11.0.2';
+
+const cloudEnabled = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+// ---------------------------------------------------------------------------
+// 1. Storage-nøgler og state
+// ---------------------------------------------------------------------------
+
+// Ny, uafhængig namespace for lokalt gemte data. Ændres bevidst fra den
+// gamle "maal-og-opgaver-*-v1"-serie, så denne version aldrig læser eller
+// genbruger data gemt af en tidligere version af appen i samme browser.
+// NB: dette gælder kun det interne datalager (localStorage) – selve
+// eksport-/importformatet (JSON-felter og Excel-kolonner) er uændret, så
+// gamle backup-filer stadig kan importeres bevidst, via knappen Importér.
+const storageKey = 'opgaveflow-tasks-v1';
+const archiveKey = 'opgaveflow-archive-v1';
+const logKey = 'opgaveflow-log-v1';
+const backgroundKey = 'opgaveflow-background-v1';
+const boomDoneKey = 'opgaveflow-boom-done-v1';
+const importanceColorsKey = 'opgaveflow-importance-colors-v1';
+const profilesKey = 'opgaveflow-profiles-v1';
+const activeProfileKey = 'opgaveflow-active-profile-v1';
+
+// ---------------------------------------------------------------------------
+// 1b. Datalag: lokalt eller Firestore
+//
+// Resten af appen kalder kun store.get / store.set / store.remove og ved
+// ikke, om data ligger lokalt eller i skyen. Alle kald er synkrone: i
+// sky-tilstand læses der fra en hukommelses-kopi, som holdes opdateret af
+// Firestores realtids-lytter, og skrivninger sendes afsted i baggrunden.
+// ---------------------------------------------------------------------------
+
+// Disse nøgler bliver altid liggende på enheden: den valgte liste (hver
+// enhed må gerne stå på hver sin) og baggrundsbilledet (et data-URL på op
+// til 2 MB, dvs. større end grænsen for et Firestore-dokument på 1 MB).
+const deviceOnlyPrefixes = [activeProfileKey, backgroundKey];
+const isDeviceOnly = key => deviceOnlyPrefixes.some(prefix => key.startsWith(prefix));
+const maxSyncedValueLength = 900000;
+const cloudOnlyKey = 'opgaveflow-cloud-only-v1';
+
+let syncStatusElement = null;
+
+function setSyncStatus(text, tone = 'ok') {
+  if (!syncStatusElement) {
+    syncStatusElement = document.createElement('div');
+    syncStatusElement.className = 'sync-status';
+    document.body.appendChild(syncStatusElement);
+  }
+  syncStatusElement.dataset.tone = tone;
+  syncStatusElement.textContent = text;
+}
+
+function createLocalStore() {
+  return {
+    mode: 'local',
+    get: key => localStorage.getItem(key),
+    set: (key, value) => localStorage.setItem(key, value),
+    remove: key => localStorage.removeItem(key),
+    onRemoteChange() {},
+    async signOut() {},
+  };
+}
+
+async function loadFirebase() {
+  const base = `https://www.gstatic.com/firebasejs/${firebaseSdkVersion}`;
+  const [app, auth, firestore] = await Promise.all([
+    import(`${base}/firebase-app.js`),
+    import(`${base}/firebase-auth.js`),
+    import(`${base}/firebase-firestore.js`),
+  ]);
+  return { app, auth, firestore };
+}
+
+function authErrorText(error) {
+  const code = error?.code || '';
+  if (code.includes('invalid-credential') || code.includes('wrong-password') || code.includes('user-not-found')) {
+    return 'Forkert e-mail eller kode.';
+  }
+  if (code.includes('too-many-requests')) return 'For mange forsøg. Prøv igen om lidt.';
+  if (code.includes('network')) return 'Ingen forbindelse til Firebase.';
+  if (code.includes('unauthorized-domain')) return 'Dette domæne er ikke godkendt i Firebase Authentication.';
+  return error?.message || 'Login mislykkedes.';
+}
+
+// Viser låseskærmen som et rigtigt login og venter, til der er en bruger.
+function signInWithLockScreen(auth, authModule) {
+  return new Promise(resolve => {
+    const lockDialog = document.querySelector('#lock-dialog');
+    const unlockForm = document.querySelector('#unlock-form');
+    const emailField = document.querySelector('#unlock-email-field');
+    const emailInput = document.querySelector('#unlock-email');
+    const codeInput = document.querySelector('#unlock-code');
+    const errorElement = document.querySelector('#unlock-error');
+    const submitButton = unlockForm.querySelector('button[type="submit"]');
+
+    document.querySelector('#lock-title').textContent = 'Log ind';
+    emailField.hidden = false;
+    emailInput.required = true;
+    codeInput.autocomplete = 'current-password';
+    submitButton.textContent = 'Log ind';
+
+    unlockForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      errorElement.hidden = true;
+      submitButton.disabled = true;
+      try {
+        await authModule.signInWithEmailAndPassword(auth, emailInput.value.trim(), codeInput.value);
+      } catch (error) {
+        errorElement.textContent = authErrorText(error);
+        errorElement.hidden = false;
+        codeInput.select();
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    const stopListening = authModule.onAuthStateChanged(auth, user => {
+      if (!user) {
+        if (!lockDialog.open) lockDialog.showModal();
+        return;
+      }
+      stopListening();
+      if (lockDialog.open) lockDialog.close();
+      resolve(user);
+    });
+  });
+}
+
+function createCloudStore({ firestore, database, path, cache, signOutFn }) {
+  const { collection, doc, setDoc, deleteDoc, onSnapshot, serverTimestamp } = firestore;
+  const dataCollection = collection(database, ...path);
+  const pendingWrites = new Map();
+  const timers = new Map();
+  let remoteHandler = () => {};
+
+  async function flush(key) {
+    if (!pendingWrites.has(key)) return;
+    const value = pendingWrites.get(key);
+    pendingWrites.delete(key);
+    try {
+      setSyncStatus('Gemmer...', 'busy');
+      if (value === null) {
+        await deleteDoc(doc(dataCollection, key));
+      } else {
+        await setDoc(doc(dataCollection, key), { v: value, t: serverTimestamp() });
+      }
+      setSyncStatus(pendingWrites.size ? 'Gemmer...' : 'Synkroniseret', pendingWrites.size ? 'busy' : 'ok');
+    } catch (error) {
+      console.error('Kunne ikke gemme i Firestore', error);
+      setSyncStatus('Ikke gemt i skyen', 'warn');
+    }
+  }
+
+  function queueWrite(key, value) {
+    pendingWrites.set(key, value);
+    clearTimeout(timers.get(key));
+    timers.set(key, setTimeout(() => flush(key), 400));
+  }
+
+  onSnapshot(dataCollection, snapshot => {
+    let changed = false;
+    snapshot.docChanges().forEach(change => {
+      if (change.doc.metadata.hasPendingWrites) return; // vores egen skrivning
+      const key = change.doc.id;
+      const value = change.type === 'removed' ? null : (change.doc.data().v ?? null);
+      if ((cache.has(key) ? cache.get(key) : null) === value) return;
+      if (value === null) cache.delete(key);
+      else cache.set(key, value);
+      changed = true;
+    });
+    setSyncStatus('Synkroniseret', 'ok');
+    if (changed) remoteHandler();
+  }, error => {
+    console.error('Firestore-lytteren fejlede', error);
+    setSyncStatus('Offline', 'warn');
+  });
+
+  window.addEventListener('beforeunload', () => {
+    Array.from(pendingWrites.keys()).forEach(key => flush(key));
+  });
+
+  return {
+    mode: 'cloud',
+    get(key) {
+      if (isDeviceOnly(key)) return localStorage.getItem(key);
+      if (cache.has(key)) return cache.get(key);
+      // Gamle lokale data bruges kun, hvis de ikke bevidst er fravalgt.
+      return localStorage.getItem(cloudOnlyKey) === 'true' ? null : localStorage.getItem(key);
+    },
+    set(key, value) {
+      if (isDeviceOnly(key)) {
+        localStorage.setItem(key, value);
+        return;
+      }
+      if (typeof value === 'string' && value.length > maxSyncedValueLength) {
+        // For stort til et Firestore-dokument - gemmes kun på denne enhed.
+        cache.set(key, value);
+        try { localStorage.setItem(key, value); } catch {}
+        setSyncStatus('For stort til skyen', 'warn');
+        return;
+      }
+      cache.set(key, value);
+      queueWrite(key, value);
+    },
+    remove(key) {
+      if (isDeviceOnly(key)) {
+        localStorage.removeItem(key);
+        return;
+      }
+      cache.delete(key);
+      try { localStorage.removeItem(key); } catch {}
+      queueWrite(key, null);
+    },
+    onRemoteChange(handler) {
+      remoteHandler = typeof handler === 'function' ? handler : () => {};
+    },
+    signOut: signOutFn,
+  };
+}
+
+// Forste gang der logges ind i et tomt sky-datasæt tilbydes det at flytte
+// de data, der allerede ligger i denne browser, med op.
+function offerLocalMigration(cloudStore) {
+  const keys = Object.keys(localStorage).filter(key => key.startsWith('opgaveflow-') && !isDeviceOnly(key) && key !== cloudOnlyKey);
+  if (!keys.length) return;
+  if (!confirm(`Der ligger allerede ${keys.length} gemte datasæt i denne browser. Vil du overføre dem til skyen nu?`)) {
+    localStorage.setItem(cloudOnlyKey, 'true');
+    return;
+  }
+  localStorage.removeItem(cloudOnlyKey);
+  keys.forEach(key => {
+    const value = localStorage.getItem(key);
+    if (value !== null) cloudStore.set(key, value);
+  });
+}
+
+async function bootStore() {
+  if (!cloudEnabled) return createLocalStore();
+  try {
+    setSyncStatus('Forbinder...', 'busy');
+    const { app, auth: authModule, firestore } = await loadFirebase();
+    const firebaseApp = app.initializeApp(firebaseConfig);
+    const auth = authModule.getAuth(firebaseApp);
+    await authModule.setPersistence(auth, authModule.browserLocalPersistence);
+
+    const database = firestore.initializeFirestore(firebaseApp, {
+      localCache: firestore.persistentLocalCache({ tabManager: firestore.persistentMultipleTabManager() }),
+    });
+
+    const user = await signInWithLockScreen(auth, authModule);
+    const path = sharedSpaceId ? ['spaces', sharedSpaceId, 'data'] : ['users', user.uid, 'data'];
+
+    setSyncStatus('Henter data...', 'busy');
+    const snapshot = await firestore.getDocs(firestore.collection(database, ...path));
+    const cache = new Map();
+    snapshot.forEach(document => cache.set(document.id, document.data().v ?? null));
+
+    const cloudStore = createCloudStore({
+      firestore,
+      database,
+      path,
+      cache,
+      signOutFn: () => authModule.signOut(auth),
+    });
+
+    if (!cache.size) offerLocalMigration(cloudStore);
+    setSyncStatus('Synkroniseret', 'ok');
+    return cloudStore;
+  } catch (error) {
+    console.error('Firebase kunne ikke startes', error);
+    setSyncStatus('Kun lokalt', 'warn');
+    alert(`Der kunne ikke oprettes forbindelse til Firebase, så appen kører videre lokalt på denne enhed.\n\n${error?.message || error}`);
+    const lockDialog = document.querySelector('#lock-dialog');
+    if (lockDialog.open) lockDialog.close();
+    return createLocalStore();
+  }
+}
+
+const store = await bootStore();
+
+let profiles = loadProfiles();
+let currentProfileId = store.get(activeProfileKey) || profiles[0].id;
+if (!profiles.some(profile => profile.id === currentProfileId)) {
+  currentProfileId = profiles[0].id;
+}
+
+let tasks = loadTasks();
+let archivedTasks = loadProfileArray(archiveKey);
+let activityLog = loadProfileArray(logKey);
+let editId = null;
+let dragState = null;
+let dragOverProfileId = null;
+let lastDeleted = null;
+let backgroundPreference = loadBackground();
+let boomDoneEnabled = loadBoomDonePreference();
+let importanceColorsEnabled = loadImportanceColorsPreference();
+let completedExpanded = false;
+let pendingProfileImage = null;
+let moveTaskId = null;
+
+// ---------------------------------------------------------------------------
+// 2. DOM-referencer
+// ---------------------------------------------------------------------------
+
+const activeList = document.querySelector('#active-list');
+const completedList = document.querySelector('#completed-list');
+const completedSection = document.querySelector('#completed-section');
+const emptyState = document.querySelector('#empty-state');
+const dialog = document.querySelector('#task-dialog');
+const form = document.querySelector('#task-form');
+const toast = document.querySelector('#toast');
+const toastMessage = document.querySelector('#toast-message');
+const undoDelete = document.querySelector('#undo-delete');
+const boomDoneToggle = document.querySelector('#toggle-boom-done');
+const importanceColorsToggle = document.querySelector('#toggle-importance-colors');
+
+// ---------------------------------------------------------------------------
+// 3. Storage-helpers
+// ---------------------------------------------------------------------------
+
+function defaultProfiles() {
+  return [
+    { id: 'hus', name: 'Hus', symbol: '⌂', color: '#3f7cc9', image: '' },
+    { id: 'indkoeb', name: 'Indkøb', symbol: '🛒', color: '#a36c4a', image: '' },
+  ];
+}
+
+function loadProfiles() {
+  try {
+    const value = JSON.parse(store.get(profilesKey));
+    return Array.isArray(value) && value.length ? value : defaultProfiles();
+  } catch {
+    return defaultProfiles();
+  }
+}
+
+function saveProfiles() {
+  store.set(profilesKey, JSON.stringify(profiles));
+}
+
+function currentProfile() {
+  return profiles.find(profile => profile.id === currentProfileId) || profiles[0];
+}
+
+// Antal ikke-færdige opgaver på en given liste, til badge i fanebladet.
+// Bruger den i-hukommelses liste for den aktuelt viste profil, ellers læses
+// direkte fra dens gemte data.
+function countTasksForProfile(profileId) {
+  if (profileId === currentProfileId) {
+    return tasks.filter(task => !task.done).length;
+  }
+  try {
+    const raw = JSON.parse(store.get(`${storageKey}-${profileId}`));
+    return Array.isArray(raw) ? raw.filter(task => !task.done).length : 0;
+  } catch {
+    return 0;
+  }
+}
+
+// Data for hver profil gemmes under sin egen nøgle, så profiler ikke deler data.
+function scopedKey(key) {
+  return `${key}-${currentProfileId}`;
+}
+
+function loadArray(key) {
+  try {
+    const value = JSON.parse(store.get(key));
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+// Falder tilbage til den u-scopede nøgle for "hus"-profilen, så data fra før
+// profiler blev indført stadig bliver fundet.
+function loadProfileArray(key) {
+  return store.get(scopedKey(key)) === null && currentProfileId === 'hus'
+    ? loadArray(key)
+    : loadArray(scopedKey(key));
+}
+
+function loadTasks() {
+  try {
+    let saved = store.get(scopedKey(storageKey));
+    if (saved === null && currentProfileId === 'hus') {
+      saved = store.get(storageKey);
+    }
+    return saved === null ? exampleTasks() : normaliseTasks(JSON.parse(saved));
+  } catch {
+    return exampleTasks();
+  }
+}
+
+function saveTasks() {
+  store.set(scopedKey(storageKey), JSON.stringify(tasks));
+}
+
+function saveArchive() {
+  store.set(scopedKey(archiveKey), JSON.stringify(archivedTasks));
+}
+
+function saveLog() {
+  store.set(scopedKey(logKey), JSON.stringify(activityLog.slice(0, 250)));
+}
+
+function loadBackground() {
+  try {
+    const key = store.get(scopedKey(backgroundKey)) === null && currentProfileId === 'hus'
+      ? backgroundKey
+      : scopedKey(backgroundKey);
+    const value = JSON.parse(store.get(key));
+    return value?.mode ? value : { mode: 'standard', image: '' };
+  } catch {
+    return { mode: 'standard', image: '' };
+  }
+}
+
+function saveBackground() {
+  store.set(scopedKey(backgroundKey), JSON.stringify(backgroundPreference));
+}
+
+function loadBoomDonePreference() {
+  return store.get(scopedKey(boomDoneKey)) === 'true';
+}
+
+function saveBoomDonePreference() {
+  store.set(scopedKey(boomDoneKey), String(boomDoneEnabled));
+}
+
+// Farvekodning er slået til som standard; kun en eksplicit "false" i storage slår den fra.
+function loadImportanceColorsPreference() {
+  return store.get(scopedKey(importanceColorsKey)) !== 'false';
+}
+
+function saveImportanceColorsPreference() {
+  store.set(scopedKey(importanceColorsKey), String(importanceColorsEnabled));
+}
+
+// ---------------------------------------------------------------------------
+// 4. Generelle hjælpefunktioner
+// ---------------------------------------------------------------------------
+
+function uid() {
+  return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+}
+
+function exampleTasks() {
+  return Array.from({ length: 5 }, (_, index) => {
+    const number = index + 1;
+    return {
+      id: `eksempel-${number}`,
+      title: `Opgave ${number}`,
+      notes: `Eksempel-note til opgave ${number}.`,
+      time: `${number} time${number === 1 ? '' : 'r'}`,
+      money: `${number} kr.`,
+      dueDate: '',
+      importance: null,
+      loud: false,
+      done: false,
+    };
+  });
+}
+
+function escapeHtml(value) {
+  const element = document.createElement('div');
+  element.textContent = value;
+  return element.innerHTML;
+}
+
+function todayIso() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function logActivity(text) {
+  activityLog.unshift({ id: uid(), text, timestamp: new Date().toISOString() });
+  saveLog();
+}
+
+// Bruges både ved indlæsning fra localStorage og ved import af JSON/Excel.
+// Accepterer både de danske feltnavne (fra JSON-backup/Excel) og de interne
+// engelske feltnavne, så begge kilder kan normaliseres ens.
+function normaliseTasks(value) {
+  if (!Array.isArray(value)) {
+    throw new Error('Filen indeholder ikke en opgaveliste.');
+  }
+  const ids = new Set();
+  return value
+    .map(item => {
+      const title = item?.beskrivelse ?? item?.title;
+      const time = item?.tid ?? item?.time;
+      const money = item?.beløb ?? item?.money;
+      const notes = item?.noter ?? item?.notes ?? '';
+      const dueDate = item?.deadline ?? item?.dueDate ?? '';
+      const done = item?.status === 'Færdig' || item?.status === 'færdig' || Boolean(item?.done);
+      const importanceRaw = Number(item?.vigtighed ?? item?.importance);
+      const importance = Number.isInteger(importanceRaw) && importanceRaw >= 1 && importanceRaw <= 10 ? importanceRaw : null;
+      const loud = item?.støjer === 'Ja' || Boolean(item?.loud);
+
+      if (!item || typeof title !== 'string' || !title.trim()) {
+        throw new Error('En opgave mangler en beskrivelse.');
+      }
+
+      const id = typeof item.id === 'string' && item.id && !ids.has(item.id) ? item.id : uid();
+      ids.add(id);
+
+      return {
+        id,
+        title: title.trim().slice(0, 160),
+        notes: typeof notes === 'string' ? notes.slice(0, 800) : '',
+        time: typeof time === 'string' ? time.slice(0, 50) : '',
+        money: typeof money === 'string' ? money.slice(0, 50) : '',
+        dueDate: /^\d{4}-\d{2}-\d{2}$/.test(dueDate) ? dueDate : '',
+        importance,
+        loud,
+        done,
+      };
+    })
+    .sort((a, b) => Number(a.done) - Number(b.done));
+}
+
+function isOverdue(task) {
+  return !task.done && task.dueDate && task.dueDate < todayIso();
+}
+
+// Halvgennemsigtige farver, så opgaveteksten altid er læsbar ovenpå.
+// 1-2: meget lys grøn · 3-5: gradvist mørkere grøn · 6: svagt rød · 7-8: tydelig rød · 9-10: mørkerød
+const importancePalette = {
+  1: 'rgba(67, 176, 71, 0.10)',
+  2: 'rgba(67, 176, 71, 0.16)',
+  3: 'rgba(56, 158, 60, 0.22)',
+  4: 'rgba(46, 140, 50, 0.28)',
+  5: 'rgba(37, 122, 41, 0.34)',
+  6: 'rgba(214, 84, 84, 0.16)',
+  7: 'rgba(206, 52, 52, 0.26)',
+  8: 'rgba(196, 30, 30, 0.32)',
+  9: 'rgba(163, 20, 20, 0.38)',
+  10: 'rgba(126, 14, 14, 0.44)',
+};
+
+function importanceColor(value) {
+  return importancePalette[value] || null;
+}
+
+function displayDate(value) {
+  return new Date(`${value}T00:00:00`).toLocaleDateString('da-DK', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function matches(task, query) {
+  return [task.title, task.time, task.money, task.dueDate].join(' ').toLowerCase().includes(query);
+}
+
+// ---------------------------------------------------------------------------
+// 5. Rendering af opgavelisten
+// ---------------------------------------------------------------------------
+
+function taskMarkup(task, position) {
+  const deadline = task.dueDate
+    ? `<span class="due-date ${isOverdue(task) ? 'overdue-label' : ''}">Deadline: ${displayDate(task.dueDate)}</span>`
+    : '';
+  const superCheck = `<button class="super-check ${task.done ? 'is-done' : ''}" type="button" title="${task.done ? 'Markér aktiv igen' : 'Super-done'}" aria-label="${task.done ? 'Markér aktiv igen' : `Super-done: afslut ${escapeHtml(task.title)} med fejring`}">${task.done ? '✓' : ''}</button>`;
+  const notes = task.notes ? `<p class="task-notes">${escapeHtml(task.notes)}</p>` : '';
+  const color = importanceColorsEnabled ? importanceColor(task.importance) : null;
+  const style = color ? ` style="background-color:${color};"` : '';
+  const loudBadge = task.loud ? `<span class="loud-badge" title="Støjende/akut opgave" aria-label="Støjende/akut opgave">🔨💥</span>` : '';
+
+  return `<article class="task ${task.done ? 'completed' : ''} ${isOverdue(task) ? 'overdue' : ''}" data-id="${task.id}" draggable="true"${style}>
+    <div class="rank-check"><span class="task-rank" aria-hidden="true">${position}</span>${superCheck}</div>
+    <div class="task-content"><p class="task-title">${loudBadge}${escapeHtml(task.title)}</p>${notes}${deadline}</div>
+    <div class="task-value"><span class="meta-label">Tid</span><span>${escapeHtml(task.time || '—')}</span></div>
+    <div class="task-value"><span class="meta-label">Beløb</span><span>${escapeHtml(task.money || '—')}</span></div>
+    <div class="menu"><button class="icon-button menu-toggle" type="button" aria-label="Flere handlinger">⋯</button><div class="menu-popover"><button class="edit-task" type="button">Redigér</button><button class="duplicate-task" type="button">Kopiér</button><button class="toggle-loud" type="button">${task.loud ? 'Fjern støj-markering' : 'Markér som støjende 🔨💥'}</button><button class="move-task" type="button">Flyt til liste</button><button class="delete-task danger" type="button">Slet</button></div></div>
+  </article>`;
+}
+
+function render() {
+  const query = document.querySelector('#search-tasks').value.trim().toLowerCase();
+  const filter = 'all';
+  const matching = task => matches(task, query);
+  const showActive = filter === 'active' || filter === 'all' || filter === 'overdue';
+  const showCompleted = filter === 'completed' || filter === 'all';
+  const active = tasks.filter(task => !task.done && matching(task) && (filter !== 'overdue' || isOverdue(task)));
+  const completed = tasks.filter(task => task.done && matching(task));
+
+  activeList.innerHTML = showActive ? active.map((task, index) => taskMarkup(task, index + 1)).join('') : '';
+  completedList.innerHTML = showCompleted ? completed.map((task, index) => taskMarkup(task, index + 1)).join('') : '';
+  completedSection.hidden = !showCompleted || completed.length === 0;
+  completedList.hidden = !completedExpanded;
+  completedList.classList.toggle('is-collapsed', !completedExpanded);
+  document.querySelector('#completed-toggle').setAttribute('aria-expanded', String(completedExpanded));
+  document.querySelector('#completed-toggle').classList.toggle('is-open', completedExpanded);
+  document.querySelector('#completed-count').textContent = `(${completed.length})`;
+
+  const visibleCount = active.length + completed.length;
+  emptyState.hidden = tasks.length !== 0 || visibleCount !== 0;
+  if (tasks.length && visibleCount === 0) {
+    emptyState.hidden = false;
+    emptyState.querySelector('h2').textContent = 'Ingen opgaver matcher';
+    emptyState.querySelector('p').textContent = 'Prøv at ændre din søgning eller dit filter.';
+  } else {
+    emptyState.querySelector('h2').textContent = 'Din liste er tom';
+    emptyState.querySelector('p').textContent = 'Tilføj din første opgave for at komme i gang.';
+  }
+
+  bindTaskEvents();
+}
+
+function bindTaskEvents() {
+  document.querySelectorAll('.task').forEach(card => {
+    const id = card.dataset.id;
+
+    card.querySelector('.super-check').addEventListener('click', () => {
+      const task = tasks.find(item => item.id === id);
+      if (task.done) {
+        toggleDone(id, false);
+      } else {
+        animateCompletion(card, true, () => toggleDone(id, true, true));
+      }
+    });
+
+    card.querySelector('.menu-toggle').addEventListener('click', event => {
+      event.stopPropagation();
+      document.querySelectorAll('.menu').forEach(menu => menu.classList.remove('open'));
+      card.querySelector('.menu').classList.toggle('open');
+    });
+
+    card.querySelector('.edit-task').addEventListener('click', () => openEditor(id));
+    card.querySelector('.duplicate-task').addEventListener('click', () => duplicateTask(id));
+    card.querySelector('.toggle-loud').addEventListener('click', () => toggleLoud(id));
+    card.querySelector('.move-task').addEventListener('click', () => openMoveDialog(id));
+    card.querySelector('.delete-task').addEventListener('click', () => deleteTask(id));
+    card.addEventListener('dblclick', event => {
+      if (!isTaskControl(event.target)) openEditor(id);
+    });
+    card.addEventListener('dragstart', event => startDrag(event, card));
+    card.addEventListener('dragend', finishDrag);
+    card.addEventListener('dragover', event => moveDrag(event, card));
+    card.addEventListener('pointerdown', event => startPointerDrag(event, card));
+  });
+}
+
+// ---------------------------------------------------------------------------
+// 6. Opgave-handlinger
+// ---------------------------------------------------------------------------
+
+function toggleDone(id, done, superDone = false) {
+  const index = tasks.findIndex(task => task.id === id);
+  const task = tasks[index];
+  task.done = done;
+  tasks.splice(index, 1);
+
+  const target = done ? tasks.length : tasks.filter(item => !item.done).length;
+  tasks.splice(target, 0, task);
+
+  saveTasks();
+  logActivity(`${superDone ? 'Super-done-markerede' : (done ? 'Markerede' : 'Genåbnede')} “${task.title}”`);
+  render();
+  showToast(done ? 'Flyttet til færdige' : 'Flyttet til aktive opgaver');
+}
+
+function openEditor(id = null) {
+  editId = id;
+  const task = tasks.find(item => item.id === id);
+  document.querySelector('#dialog-title').textContent = task ? 'Redigér opgave' : 'Tilføj opgave';
+  form.elements.title.value = task?.title || '';
+  form.elements.notes.value = task?.notes || '';
+  form.elements.time.value = task?.time || '';
+  form.elements.money.value = task?.money || '';
+  form.elements.dueDate.value = task?.dueDate || '';
+  form.elements.importance.value = task?.importance ? String(task.importance) : '';
+  form.elements.loud.checked = Boolean(task?.loud);
+  dialog.showModal();
+  setTimeout(() => form.elements.title.focus(), 50);
+}
+
+function closeDialog() {
+  dialog.close();
+  editId = null;
+  form.reset();
+}
+
+function deleteTask(id) {
+  const index = tasks.findIndex(task => task.id === id);
+  const task = tasks[index];
+  if (!confirm(`Slet “${task.title}”?`)) return;
+
+  lastDeleted = { task, index };
+  tasks.splice(index, 1);
+  saveTasks();
+  logActivity(`Slettede “${task.title}”`);
+  render();
+  showToast('Opgaven er slettet', true);
+}
+
+function duplicateTask(id) {
+  const original = tasks.find(task => task.id === id);
+  const copy = { ...original, id: uid(), title: `${original.title} (kopi)`, done: false };
+
+  const firstCompleted = tasks.findIndex(task => task.done);
+  tasks.splice(firstCompleted === -1 ? tasks.length : firstCompleted, 0, copy);
+
+  saveTasks();
+  logActivity(`Kopierede “${original.title}”`);
+  render();
+  showToast('Opgaven er kopieret');
+}
+
+function toggleLoud(id) {
+  const task = tasks.find(item => item.id === id);
+  task.loud = !task.loud;
+  saveTasks();
+  logActivity(`${task.loud ? 'Markerede' : 'Fjernede støj-markeringen fra'} “${task.title}”${task.loud ? ' som støjende' : ''}`);
+  render();
+}
+
+// ---------------------------------------------------------------------------
+// 7. Træk-og-slip (mus + touch/pen)
+// ---------------------------------------------------------------------------
+
+function isTaskControl(target) {
+  return Boolean(target.closest('.check, button, .menu'));
+}
+
+function startDrag(event, card) {
+  if (isTaskControl(event.target)) {
+    event.preventDefault();
+    return;
+  }
+  dragState = { id: card.dataset.id, done: card.classList.contains('completed') };
+  event.dataTransfer.effectAllowed = 'move';
+  event.dataTransfer.setData('text/plain', card.dataset.id);
+  requestAnimationFrame(() => card.classList.add('dragging'));
+}
+
+function moveDrag(event, card) {
+  if (!dragState || card.dataset.id === dragState.id || card.classList.contains('completed') !== dragState.done) {
+    return;
+  }
+  event.preventDefault();
+  const rect = card.getBoundingClientRect();
+  const after = event.clientY > rect.top + rect.height / 2;
+  const source = document.querySelector(`.task[data-id="${dragState.id}"]`);
+  card.parentElement.insertBefore(source, after ? card.nextSibling : card);
+}
+
+function finishDrag() {
+  if (!dragState) return;
+
+  const parent = dragState.done ? completedList : activeList;
+  const ids = [...parent.querySelectorAll('.task')].map(card => card.dataset.id);
+  const other = tasks.filter(task => task.done !== dragState.done);
+  const moved = ids.map(id => tasks.find(task => task.id === id));
+  tasks = dragState.done ? [...other, ...moved] : [...moved, ...other];
+
+  const task = tasks.find(item => item.id === dragState.id);
+  dragState = null;
+  saveTasks();
+  logActivity(`Ændrede rækkefølgen på “${task?.title || 'opgave'}”`);
+  render();
+}
+
+function startPointerDrag(event, card) {
+  if (event.pointerType === 'mouse' || isTaskControl(event.target)) return;
+  event.preventDefault();
+  dragState = { id: card.dataset.id, done: card.classList.contains('completed') };
+  card.classList.add('dragging');
+  card.setPointerCapture(event.pointerId);
+}
+
+document.addEventListener('pointermove', event => {
+  if (!dragState) return;
+  const hovered = document.elementFromPoint(event.clientX, event.clientY);
+  const profileCard = hovered?.closest('.profile-card');
+  document.querySelectorAll('.profile-card').forEach(card => card.classList.toggle('drop-target', card === profileCard));
+  dragOverProfileId = profileCard ? profileCard.dataset.profileId : null;
+  if (dragOverProfileId) return;
+
+  const taskCard = hovered?.closest('.task');
+  if (taskCard) moveDrag(event, taskCard);
+});
+
+document.addEventListener('pointerup', () => {
+  document.querySelectorAll('.profile-card').forEach(card => card.classList.remove('drop-target'));
+  if (dragState && dragOverProfileId && dragOverProfileId !== currentProfileId) {
+    const taskId = dragState.id;
+    const targetProfileId = dragOverProfileId;
+    dragState = null;
+    dragOverProfileId = null;
+    moveTaskToList(taskId, targetProfileId);
+    return;
+  }
+  dragOverProfileId = null;
+  finishDrag();
+});
+
+// ---------------------------------------------------------------------------
+// 8. Fejrings-animationer ved "Super-done"
+// ---------------------------------------------------------------------------
+
+function animateCompletion(card, isSuperDone, onComplete) {
+  if (card.dataset.completing) return;
+  card.dataset.completing = 'true';
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (isSuperDone) {
+    card.classList.add('super-completing');
+    if (!reducedMotion) {
+      if (boomDoneEnabled) playScreenExplosion();
+      else playClassicCelebration(card);
+    }
+  } else {
+    card.classList.add('completing');
+  }
+
+  setTimeout(onComplete, isSuperDone ? (reducedMotion ? 30 : (boomDoneEnabled ? 1850 : 950)) : 430);
+}
+
+function playClassicCelebration(card) {
+  const overlay = document.createElement('div');
+  overlay.className = 'celebration-overlay';
+  const colors = ['#ffdb4d', '#ff8a34', '#ef3e35', '#3b5cc9', '#35a879'];
+
+  for (let index = 0; index < 22; index += 1) {
+    const piece = document.createElement('i');
+    piece.className = ['confetti', 'serpentine', 'flag'][index % 3];
+    piece.style.setProperty('--x', `${10 + Math.random() * 80}%`);
+    piece.style.setProperty('--y', `${18 + Math.random() * 64}%`);
+    piece.style.setProperty('--dx', `${-130 + Math.random() * 260}px`);
+    piece.style.setProperty('--dy', `${-150 - Math.random() * 130}px`);
+    piece.style.setProperty('--spin', `${-360 + Math.random() * 720}deg`);
+    piece.style.setProperty('--color', colors[index % colors.length]);
+    overlay.append(piece);
+  }
+
+  card.append(overlay);
+  setTimeout(() => overlay.remove(), 950);
+}
+
+function playScreenExplosion() {
+  const overlay = document.querySelector('#superdone-overlay');
+  const colors = ['#ffdb4d', '#ff8a34', '#ef3e35', '#ffffff', '#3b5cc9'];
+  overlay.innerHTML = '';
+  overlay.classList.add('is-active');
+
+  const spots = [[14, 22], [30, 66], [48, 34], [65, 72], [84, 24], [87, 56]];
+  spots.forEach(([x, y], boomIndex) => {
+    const boom = document.createElement('div');
+    boom.className = 'pixel-boom';
+    boom.style.setProperty('--x', `${x}%`);
+    boom.style.setProperty('--y', `${y}%`);
+    overlay.append(boom);
+
+    for (let index = 0; index < 30; index += 1) {
+      const piece = document.createElement('i');
+      piece.className = 'screen-pixel';
+      piece.style.setProperty('--x', `${x}%`);
+      piece.style.setProperty('--y', `${y}%`);
+      piece.style.setProperty('--dx', `${-260 + Math.random() * 520}px`);
+      piece.style.setProperty('--dy', `${-230 + Math.random() * 460}px`);
+      piece.style.setProperty('--spin', `${-360 + Math.random() * 720}deg`);
+      piece.style.setProperty('--color', colors[(index + boomIndex) % colors.length]);
+      overlay.append(piece);
+    }
+  });
+
+  clearTimeout(playScreenExplosion.timer);
+  playScreenExplosion.timer = setTimeout(() => {
+    overlay.classList.remove('is-active');
+    overlay.innerHTML = '';
+  }, 1800);
+}
+
+function renderBoomDoneToggle() {
+  boomDoneToggle.setAttribute('aria-pressed', String(boomDoneEnabled));
+  boomDoneToggle.classList.toggle('is-active', boomDoneEnabled);
+  boomDoneToggle.textContent = boomDoneEnabled ? 'BOOM-done er aktiv' : 'Skift til BOOM-done';
+}
+
+boomDoneToggle.addEventListener('click', () => {
+  boomDoneEnabled = !boomDoneEnabled;
+  saveBoomDonePreference();
+  renderBoomDoneToggle();
+  showToast(boomDoneEnabled ? 'BOOM-done er slået til' : 'Den oprindelige Super-done-effekt er slået til');
+});
+
+renderBoomDoneToggle();
+
+function renderImportanceToggle() {
+  importanceColorsToggle.setAttribute('aria-pressed', String(importanceColorsEnabled));
+  importanceColorsToggle.classList.toggle('is-active', importanceColorsEnabled);
+  importanceColorsToggle.textContent = importanceColorsEnabled ? 'Farvekodning er aktiv' : 'Slået fra';
+}
+
+importanceColorsToggle.addEventListener('click', () => {
+  importanceColorsEnabled = !importanceColorsEnabled;
+  saveImportanceColorsPreference();
+  renderImportanceToggle();
+  render();
+  showToast(importanceColorsEnabled ? 'Farvekodning efter vigtighed er slået til' : 'Farvekodning efter vigtighed er slået fra');
+});
+
+renderImportanceToggle();
+
+// ---------------------------------------------------------------------------
+// 9. Toast-beskeder
+// ---------------------------------------------------------------------------
+
+function showToast(message, canUndo = false) {
+  toastMessage.textContent = message;
+  undoDelete.hidden = !canUndo;
+  toast.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove('show');
+    undoDelete.hidden = true;
+    lastDeleted = null;
+  }, 6000);
+}
+
+// ---------------------------------------------------------------------------
+// 10. Arkiv
+// ---------------------------------------------------------------------------
+
+function archiveCompleted() {
+  const completed = tasks.filter(task => task.done);
+  if (!completed.length) return;
+  if (!confirm(`Arkivér ${completed.length} færdige opgave${completed.length === 1 ? '' : 'r'}?`)) return;
+
+  archivedTasks = [...completed.map(task => ({ ...task, archivedAt: new Date().toISOString() })), ...archivedTasks];
+  tasks = tasks.filter(task => !task.done);
+
+  saveTasks();
+  saveArchive();
+  logActivity(`Arkiverede ${completed.length} færdige opgave${completed.length === 1 ? '' : 'r'}`);
+  render();
+  showToast('Færdige opgaver er arkiveret');
+}
+
+function renderArchive() {
+  const container = document.querySelector('#archive-list');
+  container.innerHTML = archivedTasks.length
+    ? archivedTasks
+        .map(task => `<div class="archive-item"><div><strong>${escapeHtml(task.title)}</strong><span>Arkiveret ${displayDate((task.archivedAt || todayIso()).slice(0, 10))}</span></div><div><button class="text-button restore-archive" data-id="${task.id}" type="button">Gendan</button><button class="text-button danger permanent-delete" data-id="${task.id}" type="button">Slet</button></div></div>`)
+        .join('')
+    : '<p class="muted">Arkivet er tomt.</p>';
+
+  container.querySelectorAll('.restore-archive').forEach(button => {
+    button.addEventListener('click', () => restoreArchive(button.dataset.id));
+  });
+  container.querySelectorAll('.permanent-delete').forEach(button => {
+    button.addEventListener('click', () => permanentlyDeleteArchive(button.dataset.id));
+  });
+}
+
+function restoreArchive(id) {
+  const task = archivedTasks.find(item => item.id === id);
+  archivedTasks = archivedTasks.filter(item => item.id !== id);
+  tasks.splice(tasks.filter(item => !item.done).length, 0, { ...task, done: false });
+  saveTasks();
+  saveArchive();
+  logActivity(`Gendannede “${task.title}” fra arkivet`);
+  renderArchive();
+  render();
+  showToast('Opgaven er gendannet som aktiv');
+}
+
+function permanentlyDeleteArchive(id) {
+  const task = archivedTasks.find(item => item.id === id);
+  if (!confirm(`Slet “${task.title}” permanent fra arkivet?`)) return;
+
+  archivedTasks = archivedTasks.filter(item => item.id !== id);
+  saveArchive();
+  logActivity(`Slettede “${task.title}” permanent fra arkivet`);
+  renderArchive();
+  showToast('Opgaven er slettet permanent');
+}
+
+// ---------------------------------------------------------------------------
+// 11. Ændringslog
+// ---------------------------------------------------------------------------
+
+function renderLog() {
+  const container = document.querySelector('#log-list');
+  container.innerHTML = activityLog.length
+    ? activityLog
+        .map(entry => `<div class="log-item"><span>${escapeHtml(entry.text)}</span><time>${new Date(entry.timestamp).toLocaleString('da-DK', { dateStyle: 'medium', timeStyle: 'short' })}</time></div>`)
+        .join('')
+    : '<p class="muted">Der er endnu ingen registrerede ændringer.</p>';
+}
+
+// ---------------------------------------------------------------------------
+// 12. Profiler
+// ---------------------------------------------------------------------------
+
+function renderProfiles() {
+  const container = document.querySelector('#profile-list');
+  container.innerHTML = profiles
+    .map(profile => `<button class="profile-card ${profile.id === currentProfileId ? 'is-active' : ''}" type="button" data-profile-id="${profile.id}" aria-pressed="${profile.id === currentProfileId}"><span class="profile-avatar" style="--profile-color:${profile.color};${profile.image ? `background-image:url('${profile.image}')` : ''}">${profile.image ? '' : profile.symbol}</span><span>${escapeHtml(profile.name)}</span><span class="profile-count">${countTasksForProfile(profile.id)}</span></button>`)
+    .join('');
+
+  container.querySelectorAll('.profile-card').forEach(button => {
+    button.addEventListener('click', () => selectProfile(button.dataset.profileId));
+
+    // Modtag opgaver, der trækkes-og-slippes hertil fra den aktuelle liste (musedrag).
+    button.addEventListener('dragover', event => {
+      if (!dragState) return;
+      event.preventDefault();
+      button.classList.add('drop-target');
+    });
+    button.addEventListener('dragleave', () => button.classList.remove('drop-target'));
+    button.addEventListener('drop', event => {
+      event.preventDefault();
+      button.classList.remove('drop-target');
+      if (!dragState) return;
+      const taskId = dragState.id;
+      const targetId = button.dataset.profileId;
+      dragState = null; // undgår at det efterfølgende "dragend" også prøver at omsortere
+      if (targetId === currentProfileId) return;
+      moveTaskToList(taskId, targetId);
+    });
+  });
+}
+
+function selectProfile(id) {
+  if (id === currentProfileId) return;
+
+  currentProfileId = id;
+  store.set(activeProfileKey, id);
+  tasks = loadTasks();
+  archivedTasks = loadProfileArray(archiveKey);
+  activityLog = loadProfileArray(logKey);
+  backgroundPreference = loadBackground();
+  boomDoneEnabled = loadBoomDonePreference();
+  importanceColorsEnabled = loadImportanceColorsPreference();
+  completedExpanded = false;
+
+  document.querySelector('#search-tasks').value = '';
+  document.querySelector('#background-theme').value = backgroundPreference.mode;
+  applyBackground();
+  renderBoomDoneToggle();
+  renderImportanceToggle();
+  renderProfiles();
+  render();
+}
+
+// Kaldes når Firestore melder, at data er ændret et andet sted (en anden
+// enhed eller en anden fane). Genindlæser state fra datalaget og tegner om.
+// Er en dialog åben, venter opdateringen, til den lukkes, så man ikke mister
+// det, man er i gang med at skrive.
+const refreshBlockingDialogs = ['#task-dialog', '#profile-dialog', '#move-dialog'];
+let remoteRefreshPending = false;
+
+function refreshFromStore() {
+  if (refreshBlockingDialogs.some(selector => document.querySelector(selector).open)) {
+    remoteRefreshPending = true;
+    return;
+  }
+  remoteRefreshPending = false;
+
+  profiles = loadProfiles();
+  if (!profiles.some(profile => profile.id === currentProfileId)) {
+    currentProfileId = profiles[0].id;
+  }
+  tasks = loadTasks();
+  archivedTasks = loadProfileArray(archiveKey);
+  activityLog = loadProfileArray(logKey);
+  boomDoneEnabled = loadBoomDonePreference();
+  importanceColorsEnabled = loadImportanceColorsPreference();
+
+  renderBoomDoneToggle();
+  renderImportanceToggle();
+  renderProfiles();
+  render();
+}
+
+function openProfileEditor() {
+  const profile = currentProfile();
+  pendingProfileImage = profile.image || '';
+  const profileForm = document.querySelector('#profile-form');
+  profileForm.elements.name.value = profile.name;
+  profileForm.elements.color.value = profile.color;
+  document.querySelector('#profile-dialog').showModal();
+}
+
+// Genererer et unikt, URL-venligt id ud fra listenavnet (fx "Sommerhus" -> "sommerhus").
+function createProfileId(name) {
+  const base = name
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '') || 'liste';
+  let id = base;
+  let counter = 2;
+  while (profiles.some(profile => profile.id === id)) {
+    id = `${base}-${counter}`;
+    counter += 1;
+  }
+  return id;
+}
+
+const newProfileColors = ['#3f7cc9', '#a36c4a', '#4a8f5b', '#b25ea0', '#c98a2c', '#5c6bc0'];
+
+function addProfile() {
+  const name = prompt('Navn på den nye liste:');
+  if (!name || !name.trim()) return;
+
+  const trimmed = name.trim().slice(0, 30);
+  const id = createProfileId(trimmed);
+  const profile = {
+    id,
+    name: trimmed,
+    symbol: trimmed.charAt(0).toUpperCase(),
+    color: newProfileColors[profiles.length % newProfileColors.length],
+    image: '',
+  };
+
+  profiles.push(profile);
+  saveProfiles();
+  // Ny liste skal starte helt tom, ikke med de fem eksempelopgaver.
+  store.set(`${storageKey}-${id}`, JSON.stringify([]));
+
+  document.querySelector('#profile-dialog').close();
+  selectProfile(id);
+  logActivity(`Oprettede listen “${trimmed}”`);
+  showToast(`Listen “${trimmed}” er oprettet`);
+}
+
+function deleteCurrentProfile() {
+  if (profiles.length <= 1) {
+    alert('Du skal have mindst én liste. Opret en ny liste, før du sletter denne.');
+    return;
+  }
+
+  const profile = currentProfile();
+  if (!confirm(`Slet listen “${profile.name}” og alle dens opgaver permanent? Dette kan ikke fortrydes.`)) return;
+
+  const idToDelete = profile.id;
+  profiles = profiles.filter(item => item.id !== idToDelete);
+  saveProfiles();
+  [storageKey, archiveKey, logKey, backgroundKey, boomDoneKey].forEach(key => {
+    store.remove(`${key}-${idToDelete}`);
+  });
+
+  document.querySelector('#profile-dialog').close();
+  selectProfile(profiles[0].id);
+  logActivity(`Slettede listen “${profile.name}”`);
+  showToast(`Listen “${profile.name}” er slettet`);
+}
+
+// ---------------------------------------------------------------------------
+// Flyt opgave til en anden liste
+// ---------------------------------------------------------------------------
+
+function openMoveDialog(taskId) {
+  moveTaskId = taskId;
+  const container = document.querySelector('#move-target-list');
+  const others = profiles.filter(profile => profile.id !== currentProfileId);
+
+  container.innerHTML = others.length
+    ? others
+        .map(profile => `<button class="profile-card move-target" type="button" data-profile-id="${profile.id}"><span class="profile-avatar" style="--profile-color:${profile.color};${profile.image ? `background-image:url('${profile.image}')` : ''}">${profile.image ? '' : profile.symbol}</span><span>${escapeHtml(profile.name)}</span></button>`)
+        .join('')
+    : '<p class="muted">Der er ingen andre lister at flytte til. Opret en ny liste først.</p>';
+
+  container.querySelectorAll('.move-target').forEach(button => {
+    button.addEventListener('click', () => {
+      moveTaskToList(moveTaskId, button.dataset.profileId);
+      document.querySelector('#move-dialog').close();
+    });
+  });
+
+  document.querySelectorAll('.menu').forEach(menu => menu.classList.remove('open'));
+  document.querySelector('#move-dialog').showModal();
+}
+
+// Flytter en opgave fra den aktuelle liste til en anden liste. Målets opgaver
+// læses og gemmes direkte via dens egen storage-nøgle, uden at skifte den
+// liste, brugeren aktuelt kigger på.
+function moveTaskToList(taskId, targetProfileId) {
+  const index = tasks.findIndex(task => task.id === taskId);
+  if (index === -1) return;
+  const targetProfile = profiles.find(profile => profile.id === targetProfileId);
+  if (!targetProfile) return;
+
+  const [task] = tasks.splice(index, 1);
+  saveTasks();
+
+  const targetKey = `${storageKey}-${targetProfileId}`;
+  let targetTasks;
+  try {
+    const raw = store.get(targetKey);
+    targetTasks = raw === null ? [] : normaliseTasks(JSON.parse(raw));
+  } catch {
+    targetTasks = [];
+  }
+
+  const movedTask = { ...task, done: false };
+  if (targetTasks.some(item => item.id === movedTask.id)) movedTask.id = uid();
+  const insertAt = targetTasks.filter(item => !item.done).length;
+  targetTasks.splice(insertAt, 0, movedTask);
+  store.set(targetKey, JSON.stringify(targetTasks));
+
+  logActivity(`Flyttede “${task.title}” til listen “${targetProfile.name}”`);
+  renderProfiles();
+  render();
+  showToast(`Opgaven er flyttet til “${targetProfile.name}”`);
+}
+
+// ---------------------------------------------------------------------------
+// 13. Baggrund
+// ---------------------------------------------------------------------------
+
+function applyBackground() {
+  document.body.classList.remove('background-sand', 'background-sage', 'has-background-image');
+  document.body.style.removeProperty('--user-background-image');
+
+  if (backgroundPreference.mode === 'sand') document.body.classList.add('background-sand');
+  if (backgroundPreference.mode === 'sage') document.body.classList.add('background-sage');
+  if (backgroundPreference.mode === 'image' && backgroundPreference.image) {
+    document.body.classList.add('has-background-image');
+    document.body.style.setProperty('--user-background-image', `url("${backgroundPreference.image}")`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 14. Event-bindinger til UI'et
+// ---------------------------------------------------------------------------
+
+document.querySelector('#add-task').addEventListener('click', () => openEditor());
+document.querySelector('#empty-add-task').addEventListener('click', () => openEditor());
+document.querySelector('#toggle-more-actions').addEventListener('click', () => {
+  const panel = document.querySelector('#secondary-actions');
+  const isOpen = panel.classList.toggle('open');
+  document.querySelector('#toggle-more-actions').setAttribute('aria-expanded', String(isOpen));
+});
+document.querySelector('#close-dialog').addEventListener('click', closeDialog);
+document.querySelector('#cancel-dialog').addEventListener('click', closeDialog);
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+
+  const values = {
+    title: form.elements.title.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    time: form.elements.time.value.trim(),
+    money: form.elements.money.value.trim(),
+    dueDate: form.elements.dueDate.value,
+    importance: form.elements.importance.value ? Number(form.elements.importance.value) : null,
+    loud: form.elements.loud.checked,
+  };
+  const isEditing = Boolean(editId);
+
+  if (isEditing) {
+    Object.assign(tasks.find(task => task.id === editId), values);
+  } else {
+    tasks.splice(tasks.filter(task => !task.done).length, 0, { id: uid(), ...values, done: false });
+  }
+
+  saveTasks();
+  logActivity(`${isEditing ? 'Redigerede' : 'Tilføjede'} “${values.title}”`);
+  render();
+  closeDialog();
+  showToast(isEditing ? 'Opgaven er opdateret' : 'Opgaven er tilføjet');
+});
+
+document.querySelector('#quick-add-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const input = document.querySelector('#quick-add-title');
+  const title = input.value.trim();
+  if (!title) return;
+
+  const task = { id: uid(), title, notes: '', time: '', money: '', dueDate: '', importance: null, loud: false, done: false };
+  tasks.splice(tasks.filter(item => !item.done).length, 0, task);
+  saveTasks();
+  logActivity(`Tilføjede “${title}” hurtigt`);
+  input.value = '';
+  render();
+  showToast('Opgaven er tilføjet');
+});
+
+document.querySelector('#search-tasks').addEventListener('input', render);
+
+document.querySelector('#completed-toggle').addEventListener('dblclick', () => {
+  completedExpanded = !completedExpanded;
+  render();
+});
+
+document.querySelector('#completed-toggle').addEventListener('keydown', event => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    completedExpanded = !completedExpanded;
+    render();
+  }
+});
+
+document.querySelector('#show-archive').addEventListener('click', () => {
+  renderArchive();
+  document.querySelector('#archive-dialog').showModal();
+});
+document.querySelector('#close-archive').addEventListener('click', () => document.querySelector('#archive-dialog').close());
+
+document.querySelector('#show-log').addEventListener('click', () => {
+  renderLog();
+  document.querySelector('#log-dialog').showModal();
+});
+document.querySelector('#close-log').addEventListener('click', () => document.querySelector('#log-dialog').close());
+
+document.querySelector('#reset-examples').addEventListener('click', () => {
+  if (!confirm('Erstat den aktuelle liste med de fem eksempelopgaver?')) return;
+  tasks = exampleTasks();
+  saveTasks();
+  logActivity('Indlæste de fem eksempelopgaver');
+  render();
+  showToast('Eksemplerne er indlæst');
+});
+
+document.querySelector('#edit-profile').addEventListener('click', openProfileEditor);
+document.querySelector('#close-profile').addEventListener('click', () => document.querySelector('#profile-dialog').close());
+document.querySelector('#cancel-profile').addEventListener('click', () => document.querySelector('#profile-dialog').close());
+document.querySelector('#add-profile').addEventListener('click', addProfile);
+document.querySelector('#delete-profile').addEventListener('click', deleteCurrentProfile);
+document.querySelector('#close-move').addEventListener('click', () => document.querySelector('#move-dialog').close());
+
+document.querySelector('#profile-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const profile = currentProfile();
+  profile.name = event.currentTarget.elements.name.value.trim() || profile.name;
+  profile.color = event.currentTarget.elements.color.value;
+  profile.image = pendingProfileImage || '';
+  saveProfiles();
+  renderProfiles();
+  document.querySelector('#profile-dialog').close();
+  logActivity('Tilpassede profilens udseende');
+});
+
+document.querySelector('#choose-profile-image').addEventListener('click', () => document.querySelector('#profile-image-file').click());
+
+document.querySelector('#profile-image-file').addEventListener('change', event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (file.size > 1024 * 1024) {
+    alert('Vælg et profilbillede under 1 MB.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener('load', () => {
+    pendingProfileImage = reader.result;
+  });
+  reader.readAsDataURL(file);
+});
+
+document.querySelector('#reset-profile-image').addEventListener('click', () => {
+  pendingProfileImage = '';
+});
+
+document.querySelector('#background-theme').addEventListener('change', event => {
+  const mode = event.target.value;
+  if (mode === 'image' && !backgroundPreference.image) {
+    event.target.value = backgroundPreference.mode;
+    document.querySelector('#background-file').click();
+    return;
+  }
+  backgroundPreference.mode = mode;
+  saveBackground();
+  applyBackground();
+  logActivity(`Skiftede baggrund til ${mode}`);
+});
+
+document.querySelector('#choose-background-image').addEventListener('click', () => document.querySelector('#background-file').click());
+
+document.querySelector('#background-file').addEventListener('change', event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Vælg et billede under 2 MB, så det kan gemmes lokalt.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener('load', () => {
+    backgroundPreference = { mode: 'image', image: reader.result };
+    try {
+      saveBackground();
+      applyBackground();
+      document.querySelector('#background-theme').value = 'image';
+      logActivity('Valgte et personligt baggrundsbillede');
+    } catch {
+      alert('Billedet kunne ikke gemmes lokalt. Prøv et mindre billede.');
+    }
+  });
+  reader.readAsDataURL(file);
+});
+
+document.querySelector('#reset-background').addEventListener('click', () => {
+  backgroundPreference = { mode: 'standard', image: '' };
+  store.remove(backgroundKey);
+  document.querySelector('#background-theme').value = 'standard';
+  applyBackground();
+  logActivity('Nulstillede baggrunden');
+});
+
+undoDelete.addEventListener('click', () => {
+  if (!lastDeleted) return;
+  tasks.splice(Math.min(lastDeleted.index, tasks.length), 0, lastDeleted.task);
+  saveTasks();
+  logActivity(`Gendannede “${lastDeleted.task.title}” efter sletning`);
+  render();
+  toast.classList.remove('show');
+  lastDeleted = null;
+});
+
+// ---------------------------------------------------------------------------
+// 15. Eksport / import
+//     Formatet her er bevidst uændret ift. den oprindelige version, så
+//     tidligere gemte JSON- og Excel-filer stadig kan importeres.
+// ---------------------------------------------------------------------------
+
+document.querySelector('#export-excel').addEventListener('click', () => {
+  if (!window.XLSX) {
+    alert('Excel-eksporten kunne ikke indlæses. Kontrollér din internetforbindelse og prøv igen.');
+    return;
+  }
+
+  const createSheet = list => {
+    const sheet = XLSX.utils.aoa_to_sheet([
+      ['Opgave', 'Noter', 'Pris', 'Tid', 'Deadline', 'Vigtighed', 'Støjer'],
+      ...list.map(task => [task.title, task.notes, task.money, task.time, task.dueDate, task.importance ?? '', task.loud ? 'Ja' : '']),
+    ]);
+    sheet['!cols'] = [{ wch: 32 }, { wch: 42 }, { wch: 18 }, { wch: 18 }, { wch: 16 }, { wch: 12 }, { wch: 10 }];
+    return sheet;
+  };
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, createSheet(tasks.filter(task => !task.done)), 'Aktive opgaver');
+  XLSX.utils.book_append_sheet(workbook, createSheet(tasks.filter(task => task.done)), 'Færdige opgaver');
+  XLSX.writeFile(workbook, `opgaveflow-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  logActivity('Eksporterede listen til Excel');
+  showToast('Listen er eksporteret til Excel');
+});
+
+document.querySelector('#export-tasks').addEventListener('click', () => {
+  const backup = {
+    titel: 'Mål & opgaver – eksport',
+    forklaring: 'Dette er en læsbar kopi af din opgaveliste. Den kan importeres igen i Mål & opgaver.',
+    eksporteret: new Date().toLocaleString('da-DK', { dateStyle: 'long', timeStyle: 'short' }),
+    opgaver: tasks.map((task, index) => ({
+      rækkefølge: index + 1,
+      beskrivelse: task.title,
+      noter: task.notes,
+      tid: task.time,
+      beløb: task.money,
+      deadline: task.dueDate,
+      vigtighed: task.importance ?? '',
+      støjer: task.loud ? 'Ja' : '',
+      status: task.done ? 'Færdig' : 'Aktiv',
+    })),
+    ændringslog: activityLog,
+  };
+
+  const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `opgaveflow-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  logActivity('Eksporterede en JSON-backup');
+  showToast('Listen er eksporteret som en backup-fil');
+});
+
+document.querySelector('#import-tasks').addEventListener('click', () => document.querySelector('#import-file').click());
+
+document.querySelector('#import-file').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+
+  try {
+    let imported;
+
+    if (/\.(xlsx|xls)$/i.test(file.name)) {
+      if (!window.XLSX) throw new Error('Excel-importen kunne ikke indlæses. Kontrollér din internetforbindelse og prøv igen.');
+
+      const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+      const readSheet = (name, done) => {
+        const sheet = workbook.Sheets[name];
+        if (!sheet) return [];
+        return XLSX.utils.sheet_to_json(sheet, { defval: '' }).map(row => ({
+          beskrivelse: row.Opgave,
+          noter: row.Noter,
+          beløb: row.Pris,
+          tid: row.Tid,
+          deadline: row.Deadline,
+          vigtighed: row.Vigtighed,
+          støjer: row['Støjer'],
+          status: done ? 'Færdig' : 'Aktiv',
+        }));
+      };
+
+      imported = normaliseTasks([...readSheet('Aktive opgaver', false), ...readSheet('Færdige opgaver', true)]);
+      if (!imported.length) throw new Error('Excel-filen indeholder ingen opgaver på arkene “Aktive opgaver” eller “Færdige opgaver”.');
+    } else {
+      const content = JSON.parse(await file.text());
+      imported = normaliseTasks(Array.isArray(content) ? content : (content.opgaver ?? content.tasks));
+    }
+
+    if (tasks.length && !confirm(`Import erstatter din nuværende liste med ${imported.length} opgaver. Fortsæt?`)) return;
+
+    tasks = imported;
+    saveTasks();
+    logActivity(`Importerede ${tasks.length} opgaver fra “${file.name}”`);
+    render();
+    showToast(`${tasks.filter(task => !task.done).length} aktive og ${tasks.filter(task => task.done).length} færdige opgaver er importeret`);
+  } catch (error) {
+    alert(`Importen kunne ikke gennemføres: ${error.message || 'Ugyldig fil.'}`);
+  }
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.menu')) {
+    document.querySelectorAll('.menu').forEach(menu => menu.classList.remove('open'));
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 16. Låseskærm og opstart
+// ---------------------------------------------------------------------------
+
+document.querySelector('#background-theme').value = backgroundPreference.mode;
+applyBackground();
+renderProfiles();
+render();
+
+const lockDialog = document.querySelector('#lock-dialog');
+lockDialog.addEventListener('cancel', event => event.preventDefault());
+
+if (store.mode === 'cloud') {
+  // Der er allerede logget ind via Firebase; låseskærmen med den faste kode
+  // bruges ikke. I stedet lyttes der efter ændringer fra andre enheder.
+  store.onRemoteChange(refreshFromStore);
+
+  refreshBlockingDialogs.forEach(selector => {
+    document.querySelector(selector).addEventListener('close', () => {
+      if (remoteRefreshPending) refreshFromStore();
+    });
+  });
+
+  const signOutButton = document.createElement('button');
+  signOutButton.id = 'sign-out';
+  signOutButton.className = 'button button-secondary';
+  signOutButton.type = 'button';
+  signOutButton.textContent = 'Log ud';
+  signOutButton.addEventListener('click', async () => {
+    if (!confirm('Vil du logge ud? Dine data bliver i skyen.')) return;
+    await store.signOut();
+    location.reload();
+  });
+  document.querySelector('#secondary-actions').appendChild(signOutButton);
+} else {
+  document.querySelector('#unlock-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const code = document.querySelector('#unlock-code').value;
+    if (code === 'Nanna' || code === 'nanna') {
+      lockDialog.close();
+    } else {
+      document.querySelector('#unlock-error').hidden = false;
+      document.querySelector('#unlock-code').select();
+    }
+  });
+
+  lockDialog.showModal();
+}
+
+    </script>
+  </body>
+</html>
